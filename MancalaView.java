@@ -148,5 +148,7 @@ public class MancalaView extends JFrame {
 
     void setStyle(StyleStrategy style) {
         this.styleStrategy = style;
+        boardPanel.setStyle(style);
+        boardPanel.repaint();
     }
 }

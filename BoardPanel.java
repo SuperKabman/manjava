@@ -9,6 +9,7 @@ public class BoardPanel extends JPanel {
 
     private Board board;
     private MancalaController controller;
+    private StyleStrategy style = new ConcreteStyleStrategy2();
     
     private Shape[] slots = new Shape[Board.TOTAL_SLOTS];
     private RoundRectangle2D boardShape;
@@ -23,7 +24,8 @@ public class BoardPanel extends JPanel {
 
                 if (clickedIntex != -1 
                     && clickedIntex != Board.MANCALA_A
-                    && clickedIntex != Board.MANCALA_B) {
+                    && clickedIntex != Board.MANCALA_B
+                    && controller != null) {
                     
                     controller.handlePitSelection(clickedIntex);
                 }
@@ -47,7 +49,14 @@ public class BoardPanel extends JPanel {
 
         createShapes();
 
-        g2.setColor(Color.BLACK);
+        if (style != null && board != null) {
+            style.drawBoard(g2, board);
+        } else {
+            g2.setColor(Color.BLACK);
+            g2.setStroke(new BasicStroke(3));
+            g2.draw(boardShape);
+        }
+
         g2.setStroke(new BasicStroke(3));
         g2.draw(boardShape);
 
@@ -130,9 +139,6 @@ public class BoardPanel extends JPanel {
             int y = area.y + 20 + (i / 4) * 13;
             g2.fillOval(x, y, 10, 10);
         }
-
-        g2.setColor(Color.BLACK);
-        g2.drawString(String.valueOf(stones), area.x + area.width / 2 - 4, area.y + area.height / 2);
     }
 
     private int getClickedSlot(Point p) {
@@ -149,5 +155,10 @@ public class BoardPanel extends JPanel {
             return "A" + (index + 1);
         }
         return "B" + (index - 6);
+    }
+
+    public void setStyle(StyleStrategy style) {
+        this.style = style;
+        repaint();
     }
 }
