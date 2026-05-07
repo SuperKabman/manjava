@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class BoardPanel extends JPanel {
 
-    private Board boardModel;
+    private Board board;
     private MancalaController controller;
     
     private Shape[] slots = new Shape[Board.TOTAL_SLOTS];
@@ -31,8 +31,8 @@ public class BoardPanel extends JPanel {
         });
     }
 
-    void setBoard(Board boardModel) {
-        this.boardModel = boardModel;
+    void setBoard(Board board) {
+        this.board = board;
         repaint();
     }
 
@@ -63,21 +63,21 @@ public class BoardPanel extends JPanel {
     }
 
     private void createShapes() {
+        boardShape = new RoundRectangle2D.Double(2, 2, 825, 325, 50, 50);
+
         int pitSize = 75;
         int gap = 25;
-        int x = 145;
-        int y = 65;
-        
-        boardShape = new RoundRectangle2D.Double(2, 2, 825, 325, 50, 50);
+        int startX = 145;
+
+        int topY = 65;
+        int bottomY = 185;
 
         slots[Board.MANCALA_B] = new RoundRectangle2D.Double(25, 55, 85, 215, 45, 45);
         slots[Board.MANCALA_A] = new RoundRectangle2D.Double(715, 55, 85, 215, 45, 45);
 
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 12; j++) {
-                slots[i] = new Ellipse2D.Double(x + (pitSize + gap), y, pitSize, pitSize);
-            }
-            y += 120;
+        for (int i = 0; i < 6; i++) {
+            slots[i] = new Ellipse2D.Double(startX + i * (pitSize + gap), bottomY, pitSize, pitSize);
+            slots[12 - i] = new Ellipse2D.Double(startX + i * (pitSize + gap), topY, pitSize, pitSize);
         }
     }
 
@@ -92,8 +92,8 @@ public class BoardPanel extends JPanel {
         g2.drawString(label, bounds.x + 25, bounds.y - 8);
 
         int stones = 0;
-        if (boardModel != null) {
-            stones = boardModel.getStonesIn(index);
+        if (board != null) {
+            stones = board.getStonesIn(index);
         }
 
         drawStones(g2, bounds, stones);
@@ -113,10 +113,10 @@ public class BoardPanel extends JPanel {
         g2.drawString(label, bounds.x + bounds.width / 2 - 4, bounds.y - 8);
 
         int stones = 0;
-        if (boardModel != null) {
+        if (board != null) {
             stones = index == Board.MANCALA_A
-                    ? boardModel.getMancala(0).getStones()
-                    : boardModel.getMancala(1).getStones();
+                    ? board.getMancala(0).getStones()
+                    : board.getMancala(1).getStones();
         }
 
         drawStones(g2, bounds, stones);
