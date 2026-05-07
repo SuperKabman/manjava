@@ -9,13 +9,16 @@ public class MancalaView extends JFrame {
     private static final int WINDOW_WIDTH = 970;
     private static final int WINDOW_HEIGHT = 600;
 
+    private BoardPanel boardPanel;
+
     private JButton startButton;
     private JButton undoButton;
     private JButton styleButton;
 
     private JLabel messageLabel;
 
-    // private String styleStrategy;
+    private MancalaController controller;
+    private StyleStrategy styleStrategy;
     
     public MancalaView() {
         /*
@@ -34,7 +37,7 @@ public class MancalaView extends JFrame {
         JPanel topPanel = drawTopPanel();
 
         // Board Area Panel
-        BoardPanel board = new BoardPanel();
+        boardPanel = new BoardPanel();
 
         //Left Spacer for Board Panel
         JPanel leftSpacer = new JPanel();
@@ -54,7 +57,7 @@ public class MancalaView extends JFrame {
 
         // adding to main panel
         mainPanel.add(topPanel, BorderLayout.NORTH);
-        mainPanel.add(board, BorderLayout.CENTER);
+        mainPanel.add(boardPanel, BorderLayout.CENTER);
         mainPanel.add(messagePanel, BorderLayout.SOUTH);
         mainPanel.add(leftSpacer, BorderLayout.WEST);
 
@@ -113,19 +116,33 @@ public class MancalaView extends JFrame {
         return topPanel;
     }
 
-    void refresh(/* Board b */) {
-
+    void refresh(Board b) {
+        boardPanel.setBoard(b);
+        boardPanel.repaint();
     }
 
-    void render(/* Board b */) {
-        repaint();
+    // void render(/* Board b */) {
+    //     repaint();
+    // }
+
+    void setController(MancalaController m) {
+        this.controller = controller;
+        boardPanel.setController(controller);
+
+        startButton.addActionListener(e -> {
+            String input = JOptionPane.showInputDialog(this, "Stones per pit: 3 or 4");
+            int stones = Integer.parseInt(input);
+            controller.startGame(stones);
+        });
+
+        undoButton.addActionListener(e -> controller.handleUndo());
     }
 
-    void setController(/* MancalaController m */) {
-
+    void displayMessage(String s) {
+        messageLabel.setText(s);
     }
 
-    void setStyle(/*StyleStrategy s*/) {
-
+    void setStyle(StyleStrategy style) {
+        this.styleStrategy = style;
     }
 }
