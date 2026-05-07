@@ -126,8 +126,8 @@ public class MancalaView extends JFrame {
     // }
 
     void setController(MancalaController m) {
-        this.controller = controller;
-        boardPanel.setController(controller);
+        this.controller = m;
+        boardPanel.setController(m);
 
         startButton.addActionListener(e -> {
             String input = JOptionPane.showInputDialog(this, "Stones per pit: 3 or 4");
@@ -136,6 +136,10 @@ public class MancalaView extends JFrame {
         });
 
         undoButton.addActionListener(e -> controller.handleUndo());
+
+        styleButton.addActionListener(e -> {
+            controller.setStyle(new ConcreteStyleStrategy2());
+        });
     }
 
     void displayMessage(String s) {
