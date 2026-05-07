@@ -67,13 +67,13 @@ public class BoardPanel extends JPanel {
 
         int pitSize = 75;
         int gap = 25;
-        int startX = 145;
+        int startX = 128;
 
         int topY = 65;
         int bottomY = 185;
 
         slots[Board.MANCALA_B] = new RoundRectangle2D.Double(25, 55, 85, 215, 45, 45);
-        slots[Board.MANCALA_A] = new RoundRectangle2D.Double(715, 55, 85, 215, 45, 45);
+        slots[Board.MANCALA_A] = new RoundRectangle2D.Double(720, 55, 85, 215, 45, 45);
 
         for (int i = 0; i < 6; i++) {
             slots[i] = new Ellipse2D.Double(startX + i * (pitSize + gap), bottomY, pitSize, pitSize);
